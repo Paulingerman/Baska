@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasKa - GDD Interativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .tab-active {
+            border-color: #F97316;
+            color: #F97316;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 relative overflow-x-hidden">
+
+    <div class="container mx-auto max-w-6xl p-4 sm:p-6 lg:p-8 relative z-10 bg-white bg-opacity-90 rounded-xl shadow-lg my-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-5xl font-bold text-stone-900">BasKa</h1>
+            <p class="mt-2 text-lg text-stone-600">Um jogo de basquete roguelike 1 contra 1 onde cada partida é uma jornada única e desafiadora, com power-ups e itens que transformam a jogabilidade.</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center border-b-2 border-stone-200 mb-8">
+            <button data-tab="visao-geral" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent tab-active">Visão Geral</button>
+            <button data-tab="gameplay" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Gameplay</button>
+            <button data-tab="itens-poderes" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Itens & Poderes</button>
+            <button data-tab="personagens" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Personagens</button>
+            <button data-tab="mundo-estilo" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Mundo & Estilo</button>
+            <button data-tab="arte-audio" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Arte & Áudio</button>
+            <button data-tab="ui-ux" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Design de UI/UX</button>
+            <button data-tab="contato" class="tab-btn py-3 px-4 sm:px-6 text-sm sm:text-base border-b-2 border-transparent text-stone-500 hover:text-orange-600">Contato</button>
+        </nav>
+
+        <main id="content-area">
+            
+            <section id="visao-geral" class="tab-content space-y-6">
+                <div class="text-center text-stone-700 space-y-4">
+                    <p>BasKa é um jogo de basquete 1x1 que redefine o gênero com uma abordagem **roguelike**. O jogo combina a ação rápida e o estilo arcade do basquete de rua com a imprevisibilidade e a progressão de um "dungeon crawler". O jogador embarca em uma "corrida" (uma série de partidas) em quadras únicas ao redor do mundo, enfrentando adversários cada vez mais desafiadores.</p>
+                    <p>Cada corrida é única. Após cada vitória, o jogador pode escolher entre uma seleção aleatória de power-ups, itens e habilidades que alteram permanentemente a sua construção para aquela partida. Derrotas não são o fim, mas o ponto de partida para uma nova "corrida" com novas estratégias e combinações, incentivando a rejogabilidade e a experimentação.</p>
+                    <p>O jogo será lançado no modelo **buy-to-play** (compra única). A monetização adicional será limitada a **itens cosméticos** como novas camisetas, quadras temáticas e customizações para os personagens. Isso garante uma experiência de jogo justa, sem "pay-to-win", valorizando a habilidade e a progressão do jogador.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center mt-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Gênero</h3>
+                        <p>Basquete Arcade, Esporte, Roguelike</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Plataformas</h3>
+                        <p>PC (por enquanto) e futuramente consoles</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Público-Alvo</h3>
+                        <p>Jogadores casuais e hardcore que apreciam a combinação de ação esportiva e a imprevisibilidade de jogos roguelike.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Modelo de Negócio</h3>
+                        <p>Buy-to-Play com microtransações para itens puramente cosméticos, garantindo uma experiência justa e sem pay-to-win.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Pontos-Chave</h3>
+                        <ul class="list-disc list-inside text-stone-700 text-left">
+                            <li>Combinação de gêneros inovadora.</li>
+                            <li>Rejogabilidade infinita.</li>
+                            <li>Habilidades e itens impactantes.</li>
+                            <li>Estilo de arte único e energético.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Tecnologia e Ferramentas</h3>
+                        <p>Proposto para ser desenvolvido com **Godot** e será lançado exclusivamente para **PC**. Back-end para placares e salvamento na nuvem.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gameplay" class="tab-content hidden space-y-8">
+                <p class="text-center text-stone-700">Aqui detalhamos as mecânicas centrais que definem a experiência de jogar BasKa. Explore o ciclo de jogo roguelike, o sistema de pontuação dinâmico e os controles intuitivos que formam a base da jogabilidade.</p>
+                
+                <div>
+                    <h2 class="text-2xl font-bold text-center mb-4">Loop de Jogo (Roguelike)</h2>
+                    <p class="text-center text-sm text-stone-600 mb-6">Após vencer uma partida, você será levado para a **Loja de Itens** para escolher novas habilidades e poderes, preparando-se para o próximo desafio.</p>
+                    <p class="text-center text-sm text-stone-600 mb-6">Além disso, à medida que você avança e encontra adversários mais fortes, eles têm a chance de dropar um item **Mítico**. Os itens no jogo são classificados em cinco raridades: **Comum, Raro, Épico, Lendário e Mítico**, incentivando a exploração e o desafio.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center">
+                        <div class="bg-white p-4 rounded-lg shadow-sm w-full md:w-1/5">
+                            <p class="font-semibold">1. Início</p>
+                            <p class="text-sm">Escolha o personagem e entre na primeira quadra.</p>
+                        </div>
+                        <div class="text-2xl text-orange-500 font-bold">&#10140;</div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm w-full md:w-1/5">
+                            <p class="font-semibold">2. Partida</p>
+                            <p class="text-sm">Jogue 1x1 contra a IA.</p>
+                        </div>
+                        <div class="text-2xl text-orange-500 font-bold">&#10140;</div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm w-full md:w-1/4 relative">
+                             <p class="font-semibold">3. Resultado</p>
+                             <div class="mt-2 border-t pt-2">
+                                 <p class="text-green-600 font-medium">Vitória &#8594; Loja</p>
+                                 <p class="text-red-600 font-medium">Derrota &#8594; Fim da "Corrida"</p>
+                             </div>
+                        </div>
+                         <div class="text-2xl text-orange-500 font-bold">&#10140;</div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm w-full md:w-1/5">
+                            <p class="font-semibold">4. Loja</p>
+                            <p class="text-sm">Compre itens e habilidades com o ouro obtido na partida.</p>
+                        </div>
+                         <div class="text-2xl text-orange-500 font-bold">&#10140;</div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm w-full md:w-1/5">
+                            <p class="font-sm">Avance para a próxima partida.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-center mb-4">Sistema de Pontuação</h2>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="chart-container">
+                            <canvas id="scoringChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-center mb-4">Mecânicas de Ação com Itens</h2>
+                    <p class="text-center text-stone-700 mb-6">Abaixo, alguns exemplos de como os itens interagem diretamente com a jogabilidade, transformando cada partida.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                            <div class="text-4xl mb-2">✨</div>
+                            <h3 class="font-semibold text-lg text-orange-600 mb-2">Multiplicador de Arremessos</h3>
+                            <p class="text-sm text-stone-700">Introduz a mecânica de combo por acertos. Cada arremesso ou lance livre consecutivo sem erro ativa um multiplicador de pontos. O multiplicador aumenta com cada acerto e é reiniciado ao errar. As enterradas não ativam ou resetam o combo, permitindo que você mantenha a sua sequência.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                            <div class="text-4xl mb-2">👟</div>
+                            <h3 class="font-semibold text-lg text-orange-600 mb-2">Tênis Especiais</h3>
+                            <p class="text-sm text-stone-700">Cada par de tênis concede um efeito único para sua build, como maior velocidade, um salto mais alto ou uma barra de energia que se regenera mais rapidamente.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                            <div class="text-4xl mb-2">🏀</div>
+                            <h3 class="font-semibold text-lg text-orange-600 mb-2">Bolas Especiais</h3>
+                            <p class="text-sm text-stone-700">Existem diversas bolas especiais que dão poderes ao jogador, como uma bola de gelo que congela o oponente ou uma bola de eletricidade que dá um choque quando encostada.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                            <div class="text-4xl mb-2">🧢</div>
+                            <h3 class="font-semibold text-lg text-orange-600 mb-2">Acessórios</h3>
+                            <p class="text-sm text-stone-700">Anéis, colares e bonés podem conceder bônus passivos, como uma melhoria na defesa ou um pequeno aumento no multiplicador de pontos.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="itens-poderes" class="tab-content hidden space-y-6">
+                <p class="text-center text-stone-700">Os itens são o coração da experiência roguelike de BasKa. Cada item, baseado em equipamentos de basquete, oferece um power-up único que pode mudar drasticamente o rumo de uma partida. Clique em um item para ver seus efeitos.</p>
+                <div id="items-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                </div>
+            </section>
+
+            <section id="personagens" class="tab-content hidden space-y-8">
+                <p class="text-center text-stone-700">Em BasKa, você pode tanto criar seu próprio jogador do zero, personalizando seus atributos, quanto jogar com lendas do basquete, cada uma com habilidades especiais únicas inspiradas em suas carreiras.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-center mb-4">Personagem Personalizado</h2>
+                        <p class="text-center text-sm mb-4">Crie seu avatar e distribua pontos entre cinco atributos principais para definir seu estilo de jogo. A inteligência (QI) influencia sua capacidade de antecipar jogadas, melhorando roubos de bola, a eficácia dos dribles e a precisão dos arremessos.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="attributesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 class="text-2xl font-bold text-center mb-4">Ja Morant</h2>
+                        <p class="text-center text-sm mb-4">Um jogador focado em velocidade e agilidade, capaz de realizar movimentos imprevisíveis e enterradas explosivas.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="morantAttributesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm mt-8">
+                    <h2 class="text-2xl font-bold text-center mb-4">Jogadores Lendários</h2>
+                    <div id="legends-list" class="space-y-4">
+                    </div>
+                </div>
+            </section>
+            
+            <section id="mundo-estilo" class="tab-content hidden space-y-8">
+                <p class="text-center text-stone-700">A jornada em BasKa leva você a quadras de rua icônicas ao redor do globo. Cada cenário é único, com detalhes que refletem a cultura e a energia local, combinado com um estilo de arte vibrante e uma trilha sonora energética para criar uma atmosfera urbana e global.</p>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm space-y-6">
+                    <h3 class="font-bold text-lg text-orange-600 mb-2">Cenários Globais Detalhados</h3>
+                    <ul class="space-y-6 text-stone-700">
+                        <li class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-stone-900">Nova York, EUA: O Coração do Streetball</h4>
+                            <p class="text-sm">Jogue em uma quadra clássica do Harlem, com tons terrosos e muros de tijolos cobertos de grafite vibrante. A iluminação em tons de laranja, como um pôr do sol eterno, cria uma atmosfera tensa e competitiva. A trilha sonora é de **rap clássico**, com batidas pesadas e marcadas que ecoam a vibração das ruas de NY.</p>
+                        </li>
+                        <li class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-stone-900">Rio de Janeiro, Brasil: Basquete à Beira-Mar</h4>
+                            <p class="text-sm">A quadra de Copacabana brilha sob o sol forte, com cores quentes e vivas. As linhas da quadra são descontraídas, e a areia colorida se mistura com o asfalto. A trilha sonora é uma fusão de **samba e bossa nova**, criando uma batida relaxante e dançante que convida à fluidez dos movimentos.</p>
+                        </li>
+                        <li class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-stone-900">Paris, França: Elegância Urbana</h4>
+                            <p class="text-sm">Enfrente oponentes em uma quadra moderna e estilizada à sombra da Torre Eiffel. O design é minimalista, com uma paleta de cores neutras e toques de azul e branco, e a iluminação é suave e sofisticada. O som de fundo é uma mistura de **música eletrônica francesa e pop**, com batidas limpas e ritmos que dão um ar de arte contemporânea à partida.</p>
+                        </li>
+                        <li class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-stone-900">Tóquio, Japão: O Futuro do Basquete</h4>
+                            <p class="text-sm">A quadra de Shinjuku é um espetáculo de luzes neon. A arte em 2D se destaca com anúncios animados e hologramas que piscam nas paredes dos arranha-céus futuristas. A atmosfera é cibernética, e a trilha sonora é dominada por **J-pop e batidas eletrônicas**, criando uma experiência visual e sonora que é pura energia e movimento.</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="arte-audio" class="tab-content hidden space-y-6">
+                <h2 class="text-2xl font-bold text-center mb-4">Arte e Música em Detalhes</h2>
+                <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                    <h3 class="font-bold text-lg text-orange-600">Arte 2D: Estilo e Animação</h3>
+                    <p class="text-sm text-stone-700">**BasKa** adota uma abordagem de arte 2D com traços distintos e cores fortes, inspirada em quadrinhos, arte de rua e animações contemporâneas. A meta é capturar a essência energética do basquete de rua, focando em personagens e cenários que parecem vivos e cheios de personalidade.</p>
+                    <ul class="space-y-3 pl-5 list-disc text-stone-700">
+                        <li>
+                            <p><span class="font-semibold">Personagens e Animação:</span> Os jogadores têm um design único com proporções levemente exageradas para enfatizar seus atributos, como ombros largos para um jogador de força ou pernas longas para um de velocidade. A animação é fluida e usa a técnica de "squash and stretch" para dar peso e impacto aos movimentos. Uma enterrada, por exemplo, não é apenas um salto, mas uma explosão de energia onde o corpo do jogador se estica e a bola se deforma levemente com a força do impacto, proporcionando um **feedback visual satisfatório**.</p>
+                        </li>
+                        <li>
+                            <p><span class="font-semibold">Efeitos Visuais de Habilidade:</span> Os poderes especiais são o ponto alto do visual. A **Bola em Chamas** é acompanhada de efeitos de partículas brilhantes, enquanto a **Bola "Gelada"** congela o oponente com flocos de gelo e cores frias. Esses efeitos não só indicam a ativação de um poder, mas também dão uma sensação de poder e fantasia ao jogo.</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                    <h3 class="font-bold text-lg text-orange-600">Música das Ruas: A Batida que Conquistou o Mundo</h3>
+                    <p class="text-sm text-stone-700">A trilha sonora de BasKa é uma homenagem à cultura urbana do basquete de rua, uma fusão de gêneros que se tornaram globais. A música não é apenas um fundo; é uma parte ativa da experiência de jogo, com a batida mudando dinamicamente para complementar a ação.</p>
+                    <ul class="space-y-3 pl-5 list-disc text-stone-700">
+                        <li>
+                            <p><span class="font-semibold">Rap e Trap:</span> Estes gêneros são a espinha dorsal das partidas. A batida pesada e os hi-hats rápidos do **trap instrumental** dão energia e intensidade aos duelos 1v1, acelerando quando a pontuação está apertada para aumentar a adrenalina do jogador. O **rap clássico**, com sua nostalgia e batidas marcadas, entra em cenas de transição para manter o clima de competição.</p>
+                        </li>
+                        <li>
+                            <p><span class="font-semibold">Lo-fi Hip Hop:</span> Para equilibrar a intensidade, este gênero é usado nos menus, na loja de itens e em telas de carregamento. As batidas relaxantes e a vibe tranquila do **lo-fi** criam um contraste calmo com a ação, permitindo que o jogador descanse e se concentre na estratégia antes de entrar na próxima corrida. Essa pausa sonora é essencial para a experiência de jogo, tornando a transição entre a vitória e a próxima partida mais fluida.</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ui-ux" class="tab-content hidden space-y-6">
+                <h2 class="text-2xl font-bold text-center mb-4">Conceito de UI/UX</h2>
+                <p class="text-center text-stone-700">Nosso design foca em ser **intuitivo, minimalista e agradável**. A meta é uma experiência de usuário (UX) fluida e sem atrito, complementada por uma interface de usuário (UI) limpa e acessível, utilizando a paleta de cores do jogo.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold mb-2 text-orange-600">Público-Alvo</h3>
+                        <p class="text-sm">Profissionais, estudantes e jogadores casuais que buscam uma experiência de jogo organizada e envolvente.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold mb-2 text-orange-600">Objetivo de Design</h3>
+                        <p class="text-sm">Criar um sistema de menus e HUD (Heads-Up Display) que seja fácil de navegar e que não interfira na ação principal do jogo.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-xl font-bold mb-2 text-orange-600">Fluxo do Jogador</h3>
+                        <ul class="list-disc list-inside text-sm text-stone-700 text-left">
+                            <li><span class="font-bold text-orange-600">Início:</span> Tela inicial minimalista.</li>
+                            <li><span class="font-bold text-orange-600">Seleção:</span> Navegação suave para a seleção de personagens.</li>
+                            <li><span class="font-bold text-orange-600">Partida:</span> HUD limpo com pontuação e itens ativos.</li>
+                            <li><span class="font-bold text-orange-600">Loja:</span> Interface clara para visualização e compra de itens.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Elementos de UI (Exemplos)</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-3">
+                                <span class="text-2xl text-orange-600">🎮</span>
+                                <div>
+                                    <h4 class="font-bold">HUD Dinâmico</h4>
+                                    <p class="text-sm text-gray-600">Informações de pontuação e medidor de "super" que aparecem apenas quando necessário.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <span class="text-2xl text-orange-600">🛍️</span>
+                                <div>
+                                    <h4 class="font-bold">Cards de Item</h4>
+                                    <p class="text-sm text-gray-600">Exibição de itens com ícones e descrições, facilitando a escolha após as partidas.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <span class="text-2xl text-orange-600">⚙️</span>
+                                <div>
+                                    <h4 class="font-bold">Menus de Opções</h4>
+                                    <p class="text-sm text-gray-600">Menus limpos e com ícones intuitivos para configurações de áudio, controles e gráficos.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="font-bold text-lg text-orange-600 mb-2">Paleta de Cores do Jogo</h3>
+                        <div class="flex flex-col space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-stone-900"></div>
+                                <div>
+                                    <h4 class="font-bold">Cinza Escuro</h4>
+                                    <p class="text-sm text-gray-600">Primária, para textos e fundos de destaque.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-orange-600"></div>
+                                <div>
+                                    <h4 class="font-bold">Terracota Vibrante</h4>
+                                    <p class="text-sm text-gray-600">Acento, para elementos interativos e títulos.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-stone-50 border border-gray-300"></div>
+                                <div>
+                                    <h4 class="font-bold">Neutros Claros</h4>
+                                    <p class="text-sm text-gray-600">Branco e Cinza Claro para fundos e legibilidade.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contato" class="tab-content hidden space-y-6">
+                <h2 class="text-2xl font-bold text-center mb-4">Contato</h2>
+                <p class="text-center text-stone-700">Conecte-se com o criador e explore mais projetos.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="https://www.instagram.com/paulogermanom" target="_blank" class="bg-orange-600 text-white py-3 px-6 rounded-full font-semibold shadow-md hover:bg-orange-700 transition-colors">
+                        📸 Instagram
+                    </a>
+                    <a href="https://github.com/Paulingerman" target="_blank" class="bg-stone-900 text-white py-3 px-6 rounded-full font-semibold shadow-md hover:bg-stone-800 transition-colors">
+                        🐙 GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/paulo-germano-839695332/" target="_blank" class="bg-blue-700 text-white py-3 px-6 rounded-full font-semibold shadow-md hover:bg-blue-800 transition-colors">
+                        💼 LinkedIn
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            function showTab(tabId) {
+                tabs.forEach(item => {
+                    item.classList.remove('tab-active');
+                    item.classList.add('text-stone-500');
+                });
+                contents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                const activeTab = document.querySelector(`[data-tab="${tabId}"]`);
+                if (activeTab) {
+                    activeTab.classList.add('tab-active');
+                    activeTab.classList.remove('text-stone-500');
+                    document.getElementById(tabId).classList.remove('hidden');
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    showTab(tab.dataset.tab);
+                });
+            });
+
+            const scoringData = {
+                labels: ['Cesta de 2 Pontos', 'Cesta de 3 Pontos', 'Bônus por Combo', 'Lance Livre', 'Arremesso Especial'],
+                datasets: [{
+                    label: 'Pontos',
+                    data: [2, 3, 1.5, 1, 2.5],
+                    backgroundColor: 'rgba(249, 115, 22, 0.6)',
+                    borderColor: 'rgba(249, 115, 22, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const scoringCtx = document.getElementById('scoringChart').getContext('2d');
+            new Chart(scoringCtx, {
+                type: 'bar',
+                data: scoringData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} pontos`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Valor em Pontos' }
+                        }
+                    }
+                }
+            });
+
+            const attributesData = {
+                labels: ['Precisão', 'Velocidade', 'Força', 'Defesa', 'QI'],
+                datasets: [{
+                    label: 'Atributos Base',
+                    data: [7, 8, 5, 6, 6],
+                    fill: true,
+                    backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                    borderColor: 'rgb(249, 115, 22)',
+                    pointBackgroundColor: 'rgb(249, 115, 22)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(249, 115, 22)'
+                }]
+            };
+
+            const attributesCtx = document.getElementById('attributesChart').getContext('2d');
+            new Chart(attributesCtx, {
+                type: 'radar',
+                data: attributesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+            
+            const morantAttributesData = {
+                labels: ['Precisão', 'Velocidade', 'Força', 'Defesa', 'QI'],
+                datasets: [{
+                    label: 'Atributos de Ja Morant',
+                    data: [89, 99, 70, 70, 85],
+                    fill: true,
+                    backgroundColor: 'rgba(64, 187, 249, 0.2)',
+                    borderColor: 'rgb(64, 187, 249)',
+                    pointBackgroundColor: 'rgb(64, 187, 249)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(64, 187, 249)'
+                }]
+            };
+
+            const morantAttributesCtx = document.getElementById('morantAttributesChart').getContext('2d');
+            new Chart(morantAttributesCtx, {
+                type: 'radar',
+                data: morantAttributesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    }
+                }
+            });
+
+            const items = [
+                { name: 'Bola "Foguete"', icon: '🏀', description: 'Aumenta a velocidade do arremesso, dificultando a defesa do adversário.' },
+                { name: 'Tênis "Sônico"', icon: '👟', description: 'Aumenta drasticamente a velocidade de corrida por 5 segundos.' },
+                { name: 'Munhequeira "Barreira"', icon: '🛡️', description: 'Cria um campo de força temporário que impede o adversário de roubar a bola.' },
+                { name: 'Protetor Bucal "Vampírico"', icon: '🧛', description: 'Rouba 1 ponto de vida do adversário a cada cesta.' },
+                { name: 'Joalheira "Telecinese"', icon: '🔮', description: 'Permite controlar a bola no ar após um arremesso, direcionando-a para a cesta.' },
+                { name: 'Bola "Gelada"', icon: '🧊', description: 'Após um arremesso, a bola congela no ar. Se o adversário a tocar, ele ficará congelado por 2 segundos.' },
+                { name: 'Tênis de Agilidade', icon: '🏃', description: 'Inspirado no **Air Max**. Concede um bônus de **velocidade de movimento** e aceleração, permitindo ao jogador fazer fintas e mudanças de direção mais rápidas.' },
+                { name: 'Luva de Bloqueio', icon: '🥊', description: 'Aumenta drasticamente a **eficácia dos bloqueios** e a chance de roubar a bola, criando um desafio defensivo maior para o adversário.' },
+                { name: 'Bola em Chamas', icon: '🔥', description: 'Concede ao jogador a habilidade de arremessar uma bola "em chamas", que **ignora a defesa do oponente** e garante a cesta.' },
+                { name: 'Power-up de Salto', icon: '⚡', description: 'Concede a habilidade de realizar um **salto sobre-humano** para fazer enterradas espetaculares ou bloquear arremessos em qualquer distância.' }
+            ];
+
+            const itemsGrid = document.getElementById('items-grid');
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card bg-white p-4 rounded-lg shadow-sm cursor-pointer hover:shadow-md transition-shadow';
+                card.innerHTML = `
+                    <div class="text-4xl text-center mb-2">${item.icon}</div>
+                    <h4 class="font-semibold text-center">${item.name}</h4>
+                    <p class="item-description hidden text-sm text-stone-600 mt-2">${item.description}</p>
+                `;
+                card.addEventListener('click', () => {
+                    const desc = card.querySelector('.item-description');
+                    const allDescs = document.querySelectorAll('.item-description');
+                    
+                    allDescs.forEach(d => {
+                        if (d !== desc) d.classList.add('hidden');
+                    });
+
+                    desc.classList.toggle('hidden');
+                });
+                itemsGrid.appendChild(card);
+            });
+            
+            const legends = [
+                { name: 'Habilidade "Ja Morant"', inspiration: 'Inspirado em Ja Morant', description: 'Uma habilidade de drible e velocidade que permite ao jogador passar pelo adversário de forma rápida, deixando-o atordoado por um curto período.'},
+                { name: 'Habilidade "Mamba Mentality"', inspiration: 'Inspirado em Kobe Bryant', description: 'Aumenta a chance de acertar arremessos em momentos cruciais.' },
+                { name: 'Habilidade "The Dream Shake"', inspiration: 'Inspirado em Hakeem Olajuwon', description: 'Um movimento de drible que deixa o adversário confuso, abrindo espaço para um arremesso livre.' },
+                { name: 'Habilidade "Euro Step"', inspiration: 'Inspirado em Manu Ginobili', description: 'Uma finta que permite ao jogador passar pelo adversário de forma inesperada.' },
+                { name: 'Habilidade "Splash"', inspiration: 'Inspirado em Stephen Curry', description: 'Aumenta drasticamente a precisão de arremessos de longa distância por um tempo limitado.' },
+                { name: 'Habilidade "Dagger"', inspiration: 'Inspirado em Jayson Tatum', description: 'Permite executar um arremesso "stepback" imparável que garante a cesta em momentos de pressão.' },
+                { name: 'Habilidade "Maestro"', inspiration: 'Inspirado em Luka Dončić', description: 'Cria uma abertura tática, congelando temporariamente o adversário para um drible ou arremesso livre.' }
+            ];
+
+            const legendsList = document.getElementById('legends-list');
+            legendsList.innerHTML = '';
+            legends.forEach(legend => {
+                const item = document.createElement('div');
+                item.className = 'border-l-4 border-orange-500 pl-4';
+                item.innerHTML = `
+                    <h4 class="font-semibold">${legend.name}</h4>
+                    <p class="text-xs text-stone-500">${legend.inspiration}</p>
+                    <p class="text-sm text-stone-700">${legend.description}</p>
+                `;
+                legendsList.appendChild(item);
+            });
+
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showTab(hash);
+            } else {
+                showTab('visao-geral');
+            }
+        });
+    </script>
+</body>
+</html>
